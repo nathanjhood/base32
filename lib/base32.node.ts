@@ -15,7 +15,9 @@ interface base32 {
   /**
    * Takes a string input, and returns a base32-encoded copy.
    * @param input
+   * @param input
    */
+  encode(input: string): string;
   encode(input: string): string;
   /**
    * Takes a string input, and returns a base32-encoded copy. Also accepts a
@@ -24,10 +26,13 @@ interface base32 {
    * @param hexMode
    */
   encode(input: string, hexMode: boolean): string;
+  encode(input: string, hexMode: boolean): string;
   /**
    * Takes a base32-encoded string input, and returns a decoded copy.
    * @param input
+   * @param input
    */
+  decode(input: string): string;
   decode(input: string): string;
   /**
    * Takes a base32-encoded string input, and returns a decoded copy. Also
@@ -35,6 +40,7 @@ interface base32 {
    * @param input
    * @param hexMode
    */
+  decode(input: string, hexMode: boolean): string;
   decode(input: string, hexMode: boolean): string;
 }
 const base32: base32 = require('../build/lib/base32.node');
