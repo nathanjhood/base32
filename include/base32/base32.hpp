@@ -36,7 +36,7 @@ typedef unsigned char BYTE;
  *
  * @note This signature carries the actual function definition.
  */
-std::string encode(const base32::BYTE* buf, unsigned int bufLen); // definition
+std::string encode(const base32::BYTE* buf, unsigned int bufLen, bool hex = false); // definition
 
 /**
  * @brief Returns a base32-decoded std::vector (an array) of unsigned chars from another std::vector of unsigned chars.
@@ -56,7 +56,7 @@ std::vector<base32::BYTE> decode(const std::vector<base32::BYTE>& s);
  *
  * @note This signature is an overloaded function definition.
  */
-std::string encode(std::string const& s);
+std::string encode(std::string const& s, bool hex = false);
 
 /**
  * @brief Returns a base32-decoded std::vector (an array) of unsigned chars from an std::string.
@@ -80,7 +80,7 @@ std::vector<base32::BYTE> decode(const std::string& s);
  *
  * @note This signature is an overloaded function definition.
  */
-std::string encode(std::string_view const& s);
+std::string encode(std::string_view const& s, bool hex = false);
 
 /**
  * @brief Returns a base32-decoded std::vector (an array) of unsigned chars from an std::string_view.

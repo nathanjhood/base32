@@ -14,28 +14,28 @@ interface base32 {
   version(): string;
   /**
    * Takes a string input, and returns a base32-encoded copy.
-   * @param string
+   * @param input
    */
-  encode(string: string): string;
+  encode(input: string): string;
   /**
    * Takes a string input, and returns a base32-encoded copy. Also accepts a
    * boolean, to specify if the input contains URL-like characters.
-   * @param string
+   * @param input
    * @param urlMode
    */
-  encode(string: string, urlMode: boolean): string;
+  encode(input: string, hexMode: boolean): string;
   /**
    * Takes a base32-encoded string input, and returns a decoded copy.
-   * @param string
+   * @param input
    */
-  decode(string: string): string;
+  decode(input: string): string;
   /**
    * Takes a base32-encoded string input, and returns a decoded copy. Also
    * accepts a boolean, to specify if the input contains URL-like characters.
-   * @param string
-   * @param urlMode
+   * @param input
+   * @param hexMode
    */
-  decode(string: string, urlMode: boolean): string;
+  decode(input: string, hexMode: boolean): string;
 }
 const base32: base32 = require('../build/lib/base32.node');
 export = base32;
