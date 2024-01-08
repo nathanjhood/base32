@@ -69,13 +69,13 @@ Napi::Value Encode(const Napi::CallbackInfo& args)
   std::string      encodedArg;
 #endif
 
-  // Set whether to use the URL alphabet or not...
-  bool urlMode = args[1].ToBoolean().Value();
+  // // Set whether to use the URL alphabet or not...
+  // bool urlMode = args[1].ToBoolean().Value();
 
   try {
 
     // Try to encode the string
-    encodedArg = base32::encode(args[0].ToString(), urlMode);
+    encodedArg = base32::encode(args[0].ToString() /*, urlMode */);
 
   } catch (const std::exception &x) {
 
@@ -165,14 +165,14 @@ Napi::Value Decode(const Napi::CallbackInfo& args)
 
   // Construct a string to hold the arg
   std::string      str(args[0].ToString().Utf8Value());
-  bool urlMode = args[1].ToBoolean().Value();
+  // bool urlMode = args[1].ToBoolean().Value();
 
   // Construct a fancy char array to hold the decoder's output
   std::vector<base32::BYTE> decodedArg;
 
   try {
 
-    decodedArg = base32::decode(str, urlMode);
+    decodedArg = base32::decode(str /*, urlMode */);
 
   } catch (const std::exception &x) {
 

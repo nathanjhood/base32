@@ -184,14 +184,25 @@ static std::vector<base32::BYTE> _decode(const Str& encoded_string) {
   base32::BYTE index[4];
   base32::BYTE stream[3];
 
-  while (in_len-- && (encoded_string[in_] != '=') && is_base32(encoded_string[in_])) {
+  out.reserve(in_len);
+
+  std::string base32_alphabet(base32::alphabet[0]);
+
+  bool is_base32_ = false;
+  if (0) {
+    is_base32_ = is_base32_hex(encoded_string[in_]);
+  } else {
+    is_base32_ = is_base32    (encoded_string[in_]);
+  }
+
+  while (in_len-- && (encoded_string[in_] != '=') && is_base32_) {
 
     index[i++] = encoded_string[in_];
     in_++;
 
     if (i == 4) {
       for (i = 0; i < 4; i++)
-        index[i] = base32::alphabet.find(index[i]);
+        index[i] = base32_alphabet.find(index[i]);
 
       stream[0] = ( index[0]        << 2) + ((index[1] & 0x30) >> 4);
       stream[1] = ((index[1] & 0xf) << 4) + ((index[2] & 0x3c) >> 2);
@@ -208,7 +219,7 @@ static std::vector<base32::BYTE> _decode(const Str& encoded_string) {
       index[j] = 0;
 
     for (j = 0; j < 4; j++)
-      index[j] = base32::alphabet.find(index[j]);
+      index[j] = base32_alphabet.find(index[j]);
 
     stream[0] = ( index[0]        << 2) + ((index[1] & 0x30) >> 4);
     stream[1] = ((index[1] & 0xf) << 4) + ((index[2] & 0x3c) >> 2);
