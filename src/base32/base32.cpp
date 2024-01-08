@@ -144,14 +144,14 @@ std::string encode(const base32::BYTE* buf, unsigned int bufLen) {
     index[6] = ( --j ? base32_alphabet_[((to_unsigned_char(stream[3]) << 3) + (  --j ? to_unsigned_char(stream[4]) >> 5 : 0)) & 0x1f] : '=');
     index[7] = ( --j ? base32_alphabet_[  to_unsigned_char(stream[4])                                                         & 0x1f] : '=');
 
-    // index[0] = base32::alphabet[( to_unsigned_char(stream[0]) >> 3)                                        & 0x1f];
-    // index[1] = base32::alphabet[((to_unsigned_char(stream[0]) << 2) + ( to_unsigned_char(stream[1]) >> 6)) & 0x1f];
-    // index[2] = base32::alphabet[( to_unsigned_char(stream[1]) >> 1)                                        & 0x1f];
-    // index[3] = base32::alphabet[((to_unsigned_char(stream[1]) << 4) + ( to_unsigned_char(stream[2]) >> 4)) & 0x1f];
-    // index[4] = base32::alphabet[((to_unsigned_char(stream[2]) << 1) + ( to_unsigned_char(stream[3]) >> 7)) & 0x1f];
-    // index[5] = base32::alphabet[( to_unsigned_char(stream[3]) >> 2)                                        & 0x1f];
-    // index[6] = base32::alphabet[((to_unsigned_char(stream[3]) << 3) + ( to_unsigned_char(stream[4]) >> 5)) & 0x1f];
-    // index[7] = base32::alphabet[  to_unsigned_char(stream[4])                                              & 0x1f];
+    // index[0] = base32_alphabet_[( to_unsigned_char(stream[0]) >> 3)                                        & 0x1f];
+    // index[1] = base32_alphabet_[((to_unsigned_char(stream[0]) << 2) + ( to_unsigned_char(stream[1]) >> 6)) & 0x1f];
+    // index[2] = base32_alphabet_[( to_unsigned_char(stream[1]) >> 1)                                        & 0x1f];
+    // index[3] = base32_alphabet_[((to_unsigned_char(stream[1]) << 4) + ( to_unsigned_char(stream[2]) >> 4)) & 0x1f];
+    // index[4] = base32_alphabet_[((to_unsigned_char(stream[2]) << 1) + ( to_unsigned_char(stream[3]) >> 7)) & 0x1f];
+    // index[5] = base32_alphabet_[( to_unsigned_char(stream[3]) >> 2)                                        & 0x1f];
+    // index[6] = base32_alphabet_[((to_unsigned_char(stream[3]) << 3) + ( to_unsigned_char(stream[4]) >> 5)) & 0x1f];
+    // index[7] = base32_alphabet_[  to_unsigned_char(stream[4])                                              & 0x1f];
 
     //
     for (j = 0; (j < i + 1); j++)
@@ -175,6 +175,8 @@ template <typename Str>
  * @note This is a static method (no header signature declaration).
  */
 static std::vector<base32::BYTE> _decode(const Str& encoded_string) {
+
+  // The below is under construction!
 
   std::vector<base32::BYTE> out;
   int i = 0;
