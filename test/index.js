@@ -27,6 +27,23 @@ console.log(base32.encode("fooba"));
 console.log(base32.encode("foobar"));
 console.log(base32.encode(""));
 
+console.log(base32.encode("", false));
+console.log(base32.encode("f", false));
+console.log(base32.encode("fo", false));
+console.log(base32.encode("foo", false));
+console.log(base32.encode("foob", false));
+console.log(base32.encode("fooba", false));
+console.log(base32.encode("foobar", false));
+console.log(base32.encode("", false));
+console.log(base32.encode("", true));
+console.log(base32.encode("f", true));
+console.log(base32.encode("fo", true));
+console.log(base32.encode("foo", true));
+console.log(base32.encode("foob", true));
+console.log(base32.encode("fooba", true));
+console.log(base32.encode("foobar", true));
+console.log(base32.encode("", true));
+
 // console.log("\nDecoder test:\n");
 
 // // decoder test

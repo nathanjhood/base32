@@ -27,6 +27,7 @@
  */
 
 #include "base32/base32.hpp"
+#include <iostream>
 
 namespace base32 {
 
@@ -40,10 +41,6 @@ static const char* alphabet[2] = {
 
   "0123456789"
   "ABCDEFGHIJKLMNOPQRSTUV"};
-
-  // base32 Hex alphabet...
-  // "ABCDEFGHIJKLMNOPQRSTUV"
-  // "0123456789";
 
 /**
  * @brief
@@ -87,12 +84,55 @@ template <typename Str>
  *
  * @note This is a static method (no header signature declaration).
  */
-static std::string _encode(Str s)
+static std::string _encode(Str s, bool hex = false)
 {
-  return base32::encode(reinterpret_cast<const base32::BYTE*>(s.data()), s.length());
+  return base32::encode(reinterpret_cast<const base32::BYTE*>(s.data()), s.length(), hex);
 }
 
-std::string encode(const base32::BYTE* buf, unsigned int bufLen) {
+// std::string encode(const base32::BYTE* buf, unsigned int bufLen) {
+
+//   static const char* b32str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+
+//   std::string out;
+
+//   while (inlen && outlen)
+//     {
+//       *out++ = b32str[(to_uchar (in[0]) >> 3) & 0x1f];
+//       if (!--outlen)
+//         break;
+//       *out++ = b32str[((to_uchar (in[0]) << 2) + (--inlen ? to_uchar (in[1]) >> 6 : 0)) & 0x1f];
+//       if (!--outlen)
+//         break;
+//       *out++ =
+//         (inlen ? b32str[(to_uchar (in[1]) >> 1) & 0x1f] : '=');
+//       if (!--outlen)
+//         break;
+//       *out++ = (inlen ? b32str[((to_uchar (in[1]) << 4) + (--inlen ? to_uchar (in[2]) >> 4 : 0)) & 0x1f] : '=');
+//       if (!--outlen)
+//         break;
+//       *out++ = (inlen ? b32str[((to_uchar (in[2]) << 1) + (--inlen ? to_uchar (in[3]) >> 7 : 0)) & 0x1f] : '=');
+//       if (!--outlen)
+//         break;
+//       *out++ = (inlen ? b32str[(to_uchar (in[3]) >> 2) & 0x1f] : '=');
+//       if (!--outlen)
+//         break;
+//       *out++ = (inlen ? b32str[((to_uchar (in[3]) << 3) + (--inlen ? to_uchar (in[4]) >> 5 : 0)) & 0x1f] : '=');
+//       if (!--outlen)
+//         break;
+//       *out++ = inlen ? b32str[to_uchar (in[4]) & 0x1f] : '=';
+//       if (!--outlen)
+//         break;
+//       if (inlen)
+//         inlen--;
+//       if (inlen)
+//         in += 5;
+//     }
+
+//   if (outlen)
+//     *out = '\0';
+// }
+
+std::string encode(const base32::BYTE* buf, unsigned int bufLen, bool hex) {
 
   std::string out;
   int i = 0;
@@ -100,7 +140,7 @@ std::string encode(const base32::BYTE* buf, unsigned int bufLen) {
   base32::BYTE stream[5];
   base32::BYTE index[8];
 
-  const char* base32_alphabet_ = base32::alphabet[0];
+  const char* base32_alphabet_ = base32::alphabet[hex];
 
   out.reserve(bufLen);
 
@@ -133,29 +173,33 @@ std::string encode(const base32::BYTE* buf, unsigned int bufLen) {
   {
     // Take the remaining 5 values of the index as j...
     for(j = i; j < 5; j++)
-      stream[j] = '\0'; // fill the stream with 0's...
+      stream[j] = '\0';
 
-    index[0] =         base32_alphabet_[( to_unsigned_char(stream[0]) >> 3)                                                   & 0x1f];
-    index[1] =         base32_alphabet_[((to_unsigned_char(stream[0]) << 2) + (  --j ? to_unsigned_char(stream[1]) >> 6 : 0)) & 0x1f];
-    index[2] = ( --j ? base32_alphabet_[( to_unsigned_char(stream[1]) >> 1)                                                   & 0x1f] : '=');
-    index[3] = ( --j ? base32_alphabet_[((to_unsigned_char(stream[1]) << 4) + (  --j ? to_unsigned_char(stream[2]) >> 4 : 0)) & 0x1f] : '=');
-    index[4] = ( --j ? base32_alphabet_[((to_unsigned_char(stream[2]) << 1) + (  --j ? to_unsigned_char(stream[3]) >> 7 : 0)) & 0x1f] : '=');
-    index[5] = ( --j ? base32_alphabet_[( to_unsigned_char(stream[3]) >> 2)                                                   & 0x1f] : '=');
-    index[6] = ( --j ? base32_alphabet_[((to_unsigned_char(stream[3]) << 3) + (  --j ? to_unsigned_char(stream[4]) >> 5 : 0)) & 0x1f] : '=');
-    index[7] = ( --j ? base32_alphabet_[  to_unsigned_char(stream[4])                                                         & 0x1f] : '=');
+    // index[0] =         base32_alphabet_[( to_unsigned_char(stream[0]) >> 3)                                                   & 0x1f];
+    // index[1] =         base32_alphabet_[((to_unsigned_char(stream[0]) << 2) + (  --j ? to_unsigned_char(stream[1]) >> 6 : 0)) & 0x1f];
+    // index[2] = ( --j ? base32_alphabet_[( to_unsigned_char(stream[1]) >> 1)                                                   & 0x1f] : '=');
+    // index[3] = ( --j ? base32_alphabet_[((to_unsigned_char(stream[1]) << 4) + (  --j ? to_unsigned_char(stream[2]) >> 4 : 0)) & 0x1f] : '=');
+    // index[4] = ( --j ? base32_alphabet_[((to_unsigned_char(stream[2]) << 1) + (  --j ? to_unsigned_char(stream[3]) >> 7 : 0)) & 0x1f] : '=');
+    // index[5] = ( --j ? base32_alphabet_[( to_unsigned_char(stream[3]) >> 2)                                                   & 0x1f] : '=');
+    // index[6] = ( --j ? base32_alphabet_[((to_unsigned_char(stream[3]) << 3) + (  --j ? to_unsigned_char(stream[4]) >> 5 : 0)) & 0x1f] : '=');
+    // index[7] = ( --j ? base32_alphabet_[  to_unsigned_char(stream[4])                                                         & 0x1f] : '=');
 
-    // index[0] = base32_alphabet_[( to_unsigned_char(stream[0]) >> 3)                                        & 0x1f];
-    // index[1] = base32_alphabet_[((to_unsigned_char(stream[0]) << 2) + ( to_unsigned_char(stream[1]) >> 6)) & 0x1f];
-    // index[2] = base32_alphabet_[( to_unsigned_char(stream[1]) >> 1)                                        & 0x1f];
-    // index[3] = base32_alphabet_[((to_unsigned_char(stream[1]) << 4) + ( to_unsigned_char(stream[2]) >> 4)) & 0x1f];
-    // index[4] = base32_alphabet_[((to_unsigned_char(stream[2]) << 1) + ( to_unsigned_char(stream[3]) >> 7)) & 0x1f];
-    // index[5] = base32_alphabet_[( to_unsigned_char(stream[3]) >> 2)                                        & 0x1f];
-    // index[6] = base32_alphabet_[((to_unsigned_char(stream[3]) << 3) + ( to_unsigned_char(stream[4]) >> 5)) & 0x1f];
-    // index[7] = base32_alphabet_[  to_unsigned_char(stream[4])                                              & 0x1f];
+    index[0] = base32_alphabet_[( to_unsigned_char(stream[0]) >> 3)                                        & 0x1f];
+    index[1] = base32_alphabet_[((to_unsigned_char(stream[0]) << 2) + ( to_unsigned_char(stream[1]) >> 6)) & 0x1f];
+    index[2] = base32_alphabet_[( to_unsigned_char(stream[1]) >> 1)                                        & 0x1f];
+    index[3] = base32_alphabet_[((to_unsigned_char(stream[1]) << 4) + ( to_unsigned_char(stream[2]) >> 4)) & 0x1f];
+    index[4] = base32_alphabet_[((to_unsigned_char(stream[2]) << 1) + ( to_unsigned_char(stream[3]) >> 7)) & 0x1f];
+    index[5] = base32_alphabet_[( to_unsigned_char(stream[3]) >> 2)                                        & 0x1f];
+    index[6] = base32_alphabet_[((to_unsigned_char(stream[3]) << 3) + ( to_unsigned_char(stream[4]) >> 5)) & 0x1f];
+    index[7] = base32_alphabet_[  to_unsigned_char(stream[4])                                              & 0x1f];
 
-    //
-    for (j = 0; (j < i + 1); j++)
+    // for (j = 0; (j < i + 1); j++)
+    //   out += index[j];
+
+    for (j = 0; (j < i); j++) {
       out += index[j];
+      i++;
+    }
 
     // Fill the remaining bits with padding
     while((i++ < 5))
@@ -233,8 +277,8 @@ static std::vector<base32::BYTE> _decode(const Str& encoded_string) {
   return out;
 }
 
-std::string encode(const std::string& s) {
-  return base32::_encode<std::string>(s);
+std::string encode(const std::string& s, bool hex) {
+  return base32::_encode<std::string>(s, hex);
 }
 
 std::vector<base32::BYTE> decode(const std::string& s) {
@@ -248,18 +292,18 @@ std::vector<base32::BYTE> decode(const std::vector<base32::BYTE>& s) {
 // Interfaces with std::string_view rather than const std::string&
 // Requires C++17
 #if HAS_STRING_VIEW_H
-std::string encode(const std::string_view& s) {
-  return base32::_encode<std::string_view>(s);
+std::string encode(const std::string_view& s, bool hex) {
+  return base32::_encode<std::string_view>(s, hex);
 }
 std::vector<base32::BYTE> decode(const std::string_view& s) {
   return base32::_decode<std::string_view>(s);
 }
 #endif
 
-template std::string _encode(const std::string& s);
+template std::string _encode(const std::string& s, bool hex);
 template std::vector<base32::BYTE> _decode(const std::string& encoded_string);
 #if HAS_STRING_VIEW_H
-template std::string _encode(const std::string_view& s);
+template std::string _encode(const std::string_view& s, bool hex);
 template std::vector<base32::BYTE> _decode(const std::string_view& encoded_string);
 #endif
 
